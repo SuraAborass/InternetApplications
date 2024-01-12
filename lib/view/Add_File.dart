@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:file_picker/file_picker.dart';
@@ -104,7 +105,9 @@ class _AddFileState extends State<AddFile> {
                     border: const UnderlineInputBorder(),
                     floatingLabelBehavior: FloatingLabelBehavior.always,
                     labelText:"Title",labelStyle:const TextStyle(
-                    color:kTextFieldColor,
+                     fontSize: 25,
+                  color: firstColor,
+                  fontWeight: FontWeight.bold,
                 )
                 ),
                 style:const TextStyle(color: Colors.black),
@@ -163,7 +166,9 @@ class _AddFileState extends State<AddFile> {
                           ),
                           labelText:"Url",
                           labelStyle:const TextStyle(
-                            color: kTextFieldColor,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 25,
+                            color: firstColor,
                           )
                       ),
                       validator: ((value) => value!.isValidurl()),

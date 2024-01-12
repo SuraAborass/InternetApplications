@@ -87,11 +87,20 @@ class _AddGroupState extends State<AddGroup> {
                 cursorColor:secondaryColor,
                 //initialValue: _initialValue['name'],
                 decoration: InputDecoration(
+                    focusedBorder: const UnderlineInputBorder(
+                      borderSide: BorderSide(
+                        color: firstColor,
+                        width: 2,
+                      ),
+                    ),
                     focusColor: Theme.of(context).primaryColor,
                     border: const UnderlineInputBorder(),
                     floatingLabelBehavior: FloatingLabelBehavior.always,
                     labelText:"Title of Group",labelStyle:const TextStyle(
-                    color:kTextFieldColor,
+                  fontSize:25,
+                  color:firstColor,
+                  fontWeight: FontWeight.bold,
+
                 )
                 ),
                 style:const TextStyle(color: Colors.black),
@@ -114,8 +123,10 @@ class _AddGroupState extends State<AddGroup> {
                       textAlign: TextAlign.start,
                       style: TextStyle(
                        // fontFamily: 'SegoeMarker',
-                        color: Color(0xFF1A2239),
-                        fontSize: 30,
+                        color:firstColor,
+                        fontSize:18,
+                        fontWeight: FontWeight.bold,
+
                       ),
                     ),
                   ],
@@ -137,7 +148,10 @@ class _AddGroupState extends State<AddGroup> {
                                 _add_ingredient();
                               },
                               icon: const Icon(Icons.add,
-                                  color: Color(0xff1A2239))),
+                                  color:firstColor,
+                              ),
+                            iconSize: 30,
+                          ),
                         ],
                       ),
                     ),
@@ -145,7 +159,7 @@ class _AddGroupState extends State<AddGroup> {
                 ),
               ),
               ///Button Add
-              Padding(
+             /* Padding(
                 padding: const EdgeInsetsDirectional.fromSTEB(15, 20, 0, 15),
                 child: SizedBox(
                   height: deviceSize.width/5,
@@ -176,7 +190,7 @@ class _AddGroupState extends State<AddGroup> {
                     ),
                   ),
                 ),
-              ),
+              ),*/
             ],
           ),
         ),
@@ -213,7 +227,7 @@ class _MemberState extends State<Member> {
               decoration: const InputDecoration(
                 //labelText: "member",
                 labelStyle: TextStyle(color: Color(0xff1A2239)),
-                //hintText: "enter the Description",
+                hintText: "Enter the Email Of Member",
                 enabledBorder: OutlineInputBorder(
                   borderSide: BorderSide(
                     color: Color(0xff1A2239),
