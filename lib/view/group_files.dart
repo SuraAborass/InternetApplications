@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import '../constant.dart';
-import 'package:get/get.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../widget/group_item.dart';
-import 'group_files.dart';
 
-class Groups extends StatelessWidget {
-  static const routename = '/groups';
+import '../constant.dart';
+import '../widget/file_item.dart';
+
+class GroupFiles extends StatelessWidget {
+  const GroupFiles({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -15,7 +15,7 @@ class Groups extends StatelessWidget {
         automaticallyImplyLeading: false,
         toolbarHeight: 70.h,
         //backgroundColor: fiColor,
-        title:const Text("My Groups",style:  TextStyle(fontSize: 30,fontWeight: FontWeight.bold),),
+        title:const Text("Group Files",style:  TextStyle(fontSize: 30,fontWeight: FontWeight.bold),),
         flexibleSpace: Container(
           decoration: const BoxDecoration(
               gradient: LinearGradient(
@@ -34,16 +34,11 @@ class Groups extends StatelessWidget {
         padding: const EdgeInsets.all(8),
         child: ListView.builder(
           itemBuilder: (ctx, index) {
-            return InkWell(
-              onTap: (){
-                Get.to(const GroupFiles());
-              },
-              child: GroupItem(
-                DUMMY_group[index].id!,
-                DUMMY_group[index].name,
-                DUMMY_group[index].owner!,
-                DUMMY_group[index].members,
-              ),
+            return FileItem(
+              DUMMY_Files[index].id!,
+              DUMMY_Files[index].name,
+              DUMMY_Files[index].Url,
+              DUMMY_Files[index].mode,
             );
           },
           itemCount: DUMMY_group.length,
