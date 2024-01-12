@@ -35,7 +35,7 @@ class _Main_pageState extends State<Main_page> {
             items: const [
               SideNavigationBarItem(
                 icon: Icons.file_copy,
-                label: 'All Files',
+                label: 'Reserved Files',
               ),
               SideNavigationBarItem(
                 icon: Icons.insert_drive_file,
@@ -43,11 +43,15 @@ class _Main_pageState extends State<Main_page> {
               ),
               SideNavigationBarItem(
                 icon: Icons.group_work,
-                label: 'Groups',
+                label: 'My Groups',
               ),
               SideNavigationBarItem(
                 icon: Icons.add_circle_outline,
                 label: 'Add File',
+              ),
+              SideNavigationBarItem(
+                icon: Icons.maps_ugc_sharp,
+                label: 'Add Group',
               ),
             ],
             onTap: (index) {

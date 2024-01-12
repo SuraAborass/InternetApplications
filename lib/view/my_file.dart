@@ -33,7 +33,7 @@ class MyFiles extends StatelessWidget {
         child: ListView.builder(
           itemBuilder: (ctx, index) {
             return FileItem(
-              DUMMY_Files[index].id,
+              DUMMY_Files[index].id!,
               DUMMY_Files[index].name,
               DUMMY_Files[index].Url,
               DUMMY_Files[index].mode,

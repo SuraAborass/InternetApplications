@@ -13,7 +13,7 @@ class Files extends StatelessWidget {
         automaticallyImplyLeading: false,
         toolbarHeight: 70.h,
         //backgroundColor: fiColor,
-        title:const Text("Files",style:  TextStyle(fontSize: 30,fontWeight: FontWeight.bold),),
+        title:const Text("Reserved Files",style:  TextStyle(fontSize: 30,fontWeight: FontWeight.bold),),
         flexibleSpace: Container(
           decoration: const BoxDecoration(
               gradient: LinearGradient(
@@ -33,7 +33,7 @@ class Files extends StatelessWidget {
         child: ListView.builder(
           itemBuilder: (ctx, index) {
             return FileItem(
-              DUMMY_Files[index].id,
+              DUMMY_Files[index].id!,
               DUMMY_Files[index].name,
               DUMMY_Files[index].Url,
               DUMMY_Files[index].mode,

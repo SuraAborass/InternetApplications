@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:get/get.dart';
 import 'package:untitled/extensions/validation.dart';
+import '../Controller/urlfile.dart';
 import '../constant.dart';
+import '../model/file.dart';
 
 class AddFile extends StatefulWidget {
   const AddFile({Key? key}) : super(key: key);
@@ -12,24 +15,44 @@ class AddFile extends StatefulWidget {
 }
 
 class _AddFileState extends State<AddFile> {
-  var name = '';
-  var url = 'url';
   //final _formKey = GlobalKey<FormState>();
-  late TextEditingController _controller ;
+  late final TextEditingController _fileurlcontroller ;
+  final _fileUrlFocusNode = FocusNode();
+
+  //final FilePickerController controller = Get.put(FilePickerController());
+
+  file newfile=file(
+      id:null,
+      name:'',
+      Url:'',
+      mode: Mode.chekOut
+  );
+  final _initialValue = {
+   'name':'',
+    'Url':'',
+   'mode': Mode.chekOut
+  };
   ///late final String urlfile;
 
   @override
   void initState() {
     super.initState();
-    _controller = TextEditingController();
+    _fileurlcontroller = TextEditingController();
+    _fileUrlFocusNode.addListener(_updatefileUrl);
   }
 
   @override
   void dispose() {
-    _controller.dispose();
+    _fileurlcontroller.dispose();
     //_imageUrlFocusNode.removeListener(_updateImageUrl);
 
     super.dispose();
+  }
+
+  void _updatefileUrl() {
+    if (!_fileUrlFocusNode.hasFocus) {
+      setState(() {});
+    }
   }
 
   @override
@@ -59,7 +82,7 @@ class _AddFileState extends State<AddFile> {
           Row(
             children: [
               IconButton(onPressed:(){
-                print(_controller.text);
+                print(_fileurlcontroller.text);
               }, icon: const Icon(Icons.save)),
               const SizedBox(width:15),
             ],
@@ -74,9 +97,8 @@ class _AddFileState extends State<AddFile> {
             children: [
               /// Add a Title
               TextFormField(
-                cursorColor:secondaryColor,
-
                 //initialValue: _initialValue['name'],
+                cursorColor:secondaryColor,
                 decoration: InputDecoration(
                     focusColor: Theme.of(context).primaryColor,
                     border: const UnderlineInputBorder(),
@@ -90,7 +112,14 @@ class _AddFileState extends State<AddFile> {
                 validator: (value) => value!.length< 5
                     ? 'Please Enter more than 5 characters'
                     : null,
-                onSaved:(value) => name = value!,
+                onSaved:(value) {
+                  newfile=file(
+                    id: newfile.id,
+                    name: value!,
+                    mode:Mode.chekOut,
+                    Url:newfile.Url,
+                  );
+                },
               ),
               /// Add Url
               Row(
@@ -98,8 +127,10 @@ class _AddFileState extends State<AddFile> {
                 children: [
                   Expanded(
                     child: TextFormField(
-                      controller: _controller,
-                      keyboardType: TextInputType.name,
+                      //initialValue: _initialValue!['Url'],
+                      controller: _fileurlcontroller,
+                      keyboardType: TextInputType.url,
+                      focusNode: _fileUrlFocusNode,
                       decoration:InputDecoration(
                           focusColor: Theme.of(context).primaryColor,
                           border: const UnderlineInputBorder(),
@@ -116,8 +147,13 @@ class _AddFileState extends State<AddFile> {
                               );
                               if (result != null) {
                                 String? filePath = result.files.single.path!;
-                                _controller.text = filePath ?? '';
-                                //url = filePath;
+                                _fileurlcontroller.text = filePath ?? '';
+                                newfile=file(
+                                  id: newfile.id,
+                                  name: newfile.name,
+                                  mode:Mode.chekOut,
+                                  Url:filePath,
+                                );
                                 // القيام بأي عملية تحتاج إلى مسار الملف هنا
                               } else {
                                 // المستخدم لم يقم باختيار أي ملف
@@ -126,21 +162,27 @@ class _AddFileState extends State<AddFile> {
                             icon: const Icon(Icons.insert_drive_file),
                           ),
                           labelText:"Url",
-                          labelStyle:TextStyle(
+                          labelStyle:const TextStyle(
                             color: kTextFieldColor,
                           )
                       ),
                       validator: ((value) => value!.isValidurl()),
-                      onSaved: (value) => url = value!,
+                      onSaved: (value){
+                        newfile=file(
+                            id: newfile.id,
+                            name: newfile.name,
+                            mode:Mode.chekOut,
+                            Url:value!,
+                        );
+                        //url = value!
+                      },
                       onChanged: (value) {
                         setState(() {
-
                         }); // إعادة بناء الواجهة لعرض قيمة المسار المحدثة
                       },
                       textInputAction: TextInputAction.next,
                       style:const TextStyle(color: Colors.black),
                       ////initialValue: "url",
-                      ///onFieldSubmitted: (_) {},
                     ),
                   ),
                 ],

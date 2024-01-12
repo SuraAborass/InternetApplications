@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:untitled/extensions/validation.dart';
 import '../constant.dart';
+import '../model/group.dart';
 
 class AddGroup extends StatefulWidget {
   const AddGroup({Key? key}) : super(key: key);
@@ -13,10 +14,18 @@ class AddGroup extends StatefulWidget {
 
 class _AddGroupState extends State<AddGroup> {
   var name = '';
-  var url = 'url';
+  var members = [];
   //final _formKey = GlobalKey<FormState>();
+  final _formKey = GlobalKey<FormState>();
+  final  _members= <Member>[];
   late TextEditingController _controller ;
-  ///late final String urlfile;
+
+  group newgroup=group(
+      id:null,
+      owner: null,
+      name:'',
+      members: [],
+  );
 
   @override
   void initState() {
@@ -34,14 +43,15 @@ class _AddGroupState extends State<AddGroup> {
 
   @override
   Widget build(BuildContext context) {
+    final deviceSize = MediaQuery.of(context).size;
     return Scaffold(
       //backgroundColor:Colors.white,
       appBar: AppBar(
         automaticallyImplyLeading: false,
         toolbarHeight: 70.h,
         //backgroundColor:fiColor,
-        title:const Text("Add File",
-          style:TextStyle(fontSize: 30,fontWeight: FontWeight.bold),
+        title:const Text("Add Group",
+          style:TextStyle(fontSize:30,fontWeight: FontWeight.bold),
         ),
         flexibleSpace: Container(
           decoration: const BoxDecoration(
@@ -57,7 +67,7 @@ class _AddGroupState extends State<AddGroup> {
         ),
         actions: [
           Row(
-            children: [
+            children:[
               IconButton(onPressed:(){
                 print(_controller.text);
               }, icon: const Icon(Icons.save)),
@@ -75,13 +85,12 @@ class _AddGroupState extends State<AddGroup> {
               /// Add a Title
               TextFormField(
                 cursorColor:secondaryColor,
-
                 //initialValue: _initialValue['name'],
                 decoration: InputDecoration(
                     focusColor: Theme.of(context).primaryColor,
                     border: const UnderlineInputBorder(),
                     floatingLabelBehavior: FloatingLabelBehavior.always,
-                    labelText:"Title",labelStyle:const TextStyle(
+                    labelText:"Title of Group",labelStyle:const TextStyle(
                     color:kTextFieldColor,
                 )
                 ),
@@ -92,58 +101,81 @@ class _AddGroupState extends State<AddGroup> {
                     : null,
                 onSaved:(value) => name = value!,
               ),
-              /// Add Url
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Expanded(
-                    child: TextFormField(
-                      controller: _controller,
-                      keyboardType: TextInputType.name,
-                      decoration:InputDecoration(
-                          focusColor: Theme.of(context).primaryColor,
-                          border: const UnderlineInputBorder(),
-                          floatingLabelBehavior: FloatingLabelBehavior.always,
-                          errorBorder: const UnderlineInputBorder(
-                              borderSide: BorderSide(color: Colors.red)),
-                          focusedErrorBorder: const UnderlineInputBorder(
-                                borderSide: BorderSide(color: Colors.red, width: 2.5)),
-                          suffixIcon:IconButton(
-                            onPressed: () async {
-                              FilePickerResult? result = await FilePicker.platform.pickFiles(
-                                type: FileType.custom,
-                                allowedExtensions: ['txt'],
-                              );
-                              if (result != null) {
-                                String? filePath = result.files.single.path!;
-                                _controller.text = filePath ?? '';
-                                //url = filePath;
-                                // القيام بأي عملية تحتاج إلى مسار الملف هنا
-                              } else {
-                                // المستخدم لم يقم باختيار أي ملف
-                              }
-                            },
-                            icon: const Icon(Icons.insert_drive_file),
-                          ),
-                          labelText:"Url",
-                          labelStyle:TextStyle(
-                            color: kTextFieldColor,
-                          )
+              /// Add memberemails
+              Padding(
+                padding: const EdgeInsetsDirectional.fromSTEB(15, 20, 0, 20),
+                child: Column(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: const [
+                    Text(
+                      'Add Members of Group',
+                      textAlign: TextAlign.start,
+                      style: TextStyle(
+                       // fontFamily: 'SegoeMarker',
+                        color: Color(0xFF1A2239),
+                        fontSize: 30,
                       ),
-                      validator: ((value) => value!.isValidurl()),
-                      onSaved: (value) => url = value!,
-                      onChanged: (value) {
-                        setState(() {
-
-                        }); // إعادة بناء الواجهة لعرض قيمة المسار المحدثة
-                      },
-                      textInputAction: TextInputAction.next,
-                      style:const TextStyle(color: Colors.black),
-                      ////initialValue: "url",
-                      ///onFieldSubmitted: (_) {},
+                    ),
+                  ],
+                ),
+              ),
+              Card(
+                child: SingleChildScrollView(
+                  child: Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: Form(
+                      key: _formKey,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          ..._members,
+                          const SizedBox(height: 16),
+                          IconButton(
+                              onPressed: () {
+                                _add_ingredient();
+                              },
+                              icon: const Icon(Icons.add,
+                                  color: Color(0xff1A2239))),
+                        ],
+                      ),
                     ),
                   ),
-                ],
+                ),
+              ),
+              ///Button Add
+              Padding(
+                padding: const EdgeInsetsDirectional.fromSTEB(15, 20, 0, 15),
+                child: SizedBox(
+                  height: deviceSize.width/5,
+                  width: deviceSize.width/2,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      //print('Button pressed ...');
+                    },
+                    child: Text(
+                      'Add a New member',
+                      style: TextStyle(
+                        //fontFamily: 'SegoeMarker',
+                        color: Color(0xFF1A2239),
+                        fontSize: deviceSize.width/18,
+                        fontWeight: FontWeight.normal,
+                      ),
+                    ),
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all<Color>(
+                          const Color(0xff994d00)),
+                      padding: MaterialStateProperty.all<EdgeInsets>(
+                          const EdgeInsets.fromLTRB(24, 15, 24, 15)),
+                      shape: MaterialStateProperty.all<OutlinedBorder>(
+                        RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15)),
+                      ),
+                      elevation: MaterialStateProperty.all<double>(3.0),
+                    ),
+                  ),
+                ),
               ),
             ],
           ),
@@ -151,4 +183,66 @@ class _AddGroupState extends State<AddGroup> {
       ),
     );
   }
+
+  void _add_ingredient() {
+  setState(() {
+  _members.add(const Member());
+  });
+  }
 }
+
+///////////////////////////////// Member
+
+class Member extends StatefulWidget {
+  const Member({Key? key}) : super(key: key);
+
+  @override
+  _MemberState createState() => _MemberState();
+}
+class _MemberState extends State<Member> {
+  String? _ingraDescription;
+
+  @override
+  Widget build(BuildContext context) {
+    return Form(
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            TextFormField(
+              decoration: const InputDecoration(
+                //labelText: "member",
+                labelStyle: TextStyle(color: Color(0xff1A2239)),
+                //hintText: "enter the Description",
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                    color: Color(0xff1A2239),
+                  ),
+                ),
+                focusedBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(
+                    color: firstColor,
+                    width: 2,
+                  ),
+                ),
+              ),
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return "Please enter an email or user name";
+                }
+                return null;
+              },
+              onSaved: (value) {
+                _ingraDescription = value;
+              },
+            ),
+            const SizedBox(
+              height: 15,
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}
+

@@ -4,7 +4,7 @@ enum Mode {
  chekOut,
 }
 class file {
-  final String id;
+  final String? id;
   final String name;
   final String Url;
   final Mode mode;

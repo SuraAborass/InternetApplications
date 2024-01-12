@@ -7,6 +7,7 @@ import 'package:untitled/view/groups.dart';
 import 'package:untitled/view/my_file.dart';
 import 'model/file.dart';
 import 'model/group.dart';
+import 'view/Add_Group.dart';
 
 
 List<Widget> views =  [
@@ -14,6 +15,7 @@ List<Widget> views =  [
   MyFiles(),
   Groups(),
   AddFile(),
+  AddGroup(),
   //add_AD(),
 ];
 
